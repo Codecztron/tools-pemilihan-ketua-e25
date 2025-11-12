@@ -15,13 +15,12 @@ function Timer () {
   const pausedTimeRef = useRef(0);
 
   useEffect(() => {
+    // ... (logic tidak berubah)
     if (isRunning) {
       startTimeRef.current = Date.now() - (pausedTimeRef.current * 1000);
-      
       intervalRef.current = setInterval(() => {
         const now = Date.now();
         const elapsed = Math.floor((now - startTimeRef.current) / 1000);
-        
         if (mode === 'countdown') {
           const newTime = countdownTime - elapsed;
           if (newTime <= 0) {
@@ -41,15 +40,10 @@ function Timer () {
         }
       }, 100);
     } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     }
-
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [isRunning, mode, countdownTime]);
 
@@ -71,7 +65,7 @@ function Timer () {
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.5);
     } catch (error) {
-      console.log('Audio playback not supported');
+      console.log('Audio playback not supported',error);
     }
   };
 
@@ -122,20 +116,20 @@ function Timer () {
     }
   };
 
-  const adjustTime = (amount) => {
-    if (!isRunning && mode === 'countdown') {
-      const newTime = Math.max(0, countdownTime + amount);
-      setTime(newTime);
-      setCountdownTime(newTime);
-      pausedTimeRef.current = 0;
-      setIsFinished(false);
+  // const adjustTime = (amount) => {
+  //   if (!isRunning && mode === 'countdown') {
+  //     const newTime = Math.max(0, countdownTime + amount);
+  //     setTime(newTime);
+  //     setCountdownTime(newTime);
+  //     pausedTimeRef.current = 0;
+  //     setIsFinished(false);
       
-      const mins = Math.floor(newTime / 60);
-      const secs = newTime % 60;
-      setInputMinutes(String(mins));
-      setInputSeconds(String(secs));
-    }
-  };
+  //     const mins = Math.floor(newTime / 60);
+  //     const secs = newTime % 60;
+  //     setInputMinutes(String(mins));
+  //     setInputSeconds(String(secs));
+  //   }
+  // };
 
     const handleMinutesChange = (e) => {
         const value = e.target.value;
@@ -177,40 +171,34 @@ function Timer () {
         return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     };
 
-    const getProgressPercentage = () => {
-        if (mode === 'countdown' && countdownTime > 0) {
-        return Math.max(0, Math.min(100, (time / countdownTime) * 100));
-        }
-        return 0;
-    };
 
-    const circumference = 2 * Math.PI * 45;
-    const strokeDashoffset = circumference * (1 - getProgressPercentage() / 100);
+  const getProgressPercentage = () => {
+      if (mode === 'countdown' && countdownTime > 0) {
+      return Math.max(0, Math.min(100, (time / countdownTime) * 100));
+      }
+      return 0;
+  };
 
-    return (
-    // Latar belakang gradien biru gelap sesuai banner
+  const circumference = 2 * Math.PI * 45;
+  const strokeDashoffset = circumference * (1 - getProgressPercentage() / 100);
+
+  return (
     <div className="min-h-screen bg-linear-to-br from-[#0a0f2c] via-[#1a1a5b] to-[#3a1c5e] flex items-center justify-center p-4 text-white">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-md">
         {/* Tombol Ganti Mode */}
         <div className="flex gap-4 mb-8 justify-center">
           <button
-            onClick={() => switchMode('stopwatch')}
-            disabled={isRunning}
-            className={`px-6 py-3 rounded-lg font-semibold transition-all border ${
-              mode === 'stopwatch'
-                ? 'bg-yellow-400 text-slate-900 shadow-lg scale-105 border-transparent'
-                : 'bg-white/10 text-white hover:bg-white/20 border-white/20'
+            onClick={() => switchMode('stopwatch')} disabled={isRunning}
+            className={`px-5 py-2.5 rounded-lg font-semibold transition-all border text-sm sm:text-base ${
+              mode === 'stopwatch' ? 'bg-yellow-400 text-slate-900 shadow-lg scale-105 border-transparent' : 'bg-white/10 text-white hover:bg-white/20 border-white/20'
             } ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Stopwatch
           </button>
           <button
-            onClick={() => switchMode('countdown')}
-            disabled={isRunning}
-            className={`px-6 py-3 rounded-lg font-semibold transition-all border ${
-              mode === 'countdown'
-                ? 'bg-yellow-400 text-slate-900 shadow-lg scale-105 border-transparent'
-                : 'bg-white/10 text-white hover:bg-white/20 border-white/20'
+            onClick={() => switchMode('countdown')} disabled={isRunning}
+            className={`px-5 py-2.5 rounded-lg font-semibold transition-all border text-sm sm:text-base ${
+              mode === 'countdown' ? 'bg-yellow-400 text-slate-900 shadow-lg scale-105 border-transparent' : 'bg-white/10 text-white hover:bg-white/20 border-white/20'
             } ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Countdown
@@ -218,96 +206,59 @@ function Timer () {
         </div>
 
         {/* Kartu Timer Utama */}
-        <div className="bg-black/20 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-12 border border-white/20">
-          <div className="text-center mb-8">
+        <div className="bg-black/20 backdrop-blur-lg rounded-3xl shadow-2xl p-6 sm:p-8 border border-white/20">
+          <div className="text-center mb-6">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Clock className="text-yellow-300" size={32} />
-              <h1 className="text-3xl font-bold text-white">
-                {mode === 'stopwatch' ? 'Stopwatch' : 'Countdown Timer'}
+              <Clock className="text-yellow-300" size={28} />
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">
+                {mode === 'stopwatch' ? 'Stopwatch' : 'Countdown'}
               </h1>
             </div>
           </div>
           
           {/* Tampilan Timer */}
-          <div className="relative mb-8 w-64 h-64 sm:w-80 sm:h-80 mx-auto flex items-center justify-center">
+          <div className="relative mb-8 w-56 h-56 sm:w-64 sm:h-64 mx-auto flex items-center justify-center">
             {mode === 'countdown' && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <svg width="100%" height="100%" viewBox="0 0 100 100" className="w-full h-full -rotate-90">
                   <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6"/>
-                  <circle
-                    cx="50" cy="50" r="45" fill="none"
-                    className="stroke-yellow-400"
-                    strokeWidth="6" strokeDasharray={circumference}
-                    strokeDashoffset={strokeDashoffset} strokeLinecap="round"
-                    style={{ transition: isRunning ? 'stroke-dashoffset 0.1s linear' : 'none' }}
-                  />
+                  <circle cx="50" cy="50" r="45" fill="none" className="stroke-yellow-400" strokeWidth="6" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" style={{ transition: isRunning ? 'stroke-dashoffset 0.1s linear' : 'none' }} />
                 </svg>
               </div>
             )}
-            <div className="relative z-10 text-center">
-              <div className={`text-6xl sm:text-7xl font-bold text-white font-mono ${isFinished ? 'animate-pulse text-red-400' : ''}`}>
-                {formatTime(time)}
-              </div>
+            <div className={`text-5xl sm:text-6xl font-bold text-white font-mono ${isFinished ? 'animate-pulse text-red-400' : ''}`}>
+              {formatTime(time)}
             </div>
           </div>
 
           {/* Pengaturan Countdown */}
           {mode === 'countdown' && !isRunning && (
-            <div className="mb-8 bg-black/20 rounded-xl p-6 border border-white/20">
+            <div className="mb-8 bg-black/20 rounded-xl p-4 sm:p-6 border border-white/20">
               <h3 className="text-yellow-300 font-semibold mb-4 text-center">Atur Waktu</h3>
-              <div className="flex gap-4 items-center justify-center mb-4">
-                <div className="flex flex-col items-center">
-                  <label className="text-slate-300 text-sm mb-2">Menit</label>
-                  <input
-                    type="text" inputMode="numeric" value={inputMinutes}
-                    onChange={handleMinutesChange} onBlur={handleMinutesBlur}
-                    className="w-20 px-3 py-2 rounded-lg text-center bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-white/50"
-                    placeholder="0"
-                  />
-                </div>
-                <div className="text-white text-2xl mt-6">:</div>
-                <div className="flex flex-col items-center">
-                  <label className="text-slate-300 text-sm mb-2">Detik</label>
-                  <input
-                    type="text" inputMode="numeric" value={inputSeconds}
-                    onChange={handleSecondsChange} onBlur={handleSecondsBlur}
-                    className="w-20 px-3 py-2 rounded-lg text-center bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-white/50"
-                    placeholder="0"
-                  />
-                </div>
+              <div className="flex gap-2 items-center justify-center mb-4">
+                <input type="text" inputMode="numeric" value={inputMinutes} onChange={handleMinutesChange} onBlur={handleMinutesBlur} className="w-16 px-2 py-2 rounded-lg text-center bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="0" />
+                <span className="text-white text-2xl">:</span>
+                <input type="text" inputMode="numeric" value={inputSeconds} onChange={handleSecondsChange} onBlur={handleSecondsBlur} className="w-16 px-2 py-2 rounded-lg text-center bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="0" />
               </div>
-              <button onClick={setCountdown} className="w-full bg-yellow-400 text-slate-900 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition-colors">
+              <button onClick={setCountdown} className="w-full bg-yellow-400 text-slate-900 py-2.5 rounded-lg font-semibold hover:bg-yellow-300 transition-colors">
                 Set Timer
               </button>
-              
-              <div className="flex gap-2 mt-4 justify-center">
-                <button onClick={() => adjustTime(-60)} className="bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors flex items-center gap-2">
-                  <Minus size={16} /> 1 min
-                </button>
-                <button onClick={() => adjustTime(60)} className="bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors flex items-center gap-2">
-                  <Plus size={16} /> 1 min
-                </button>
-              </div>
             </div>
           )}
 
           {/* Kontrol */}
           <div className="flex gap-4 justify-center">
-            <button
-              onClick={toggleTimer}
-              disabled={mode === 'countdown' && time === 0 && !isRunning && !isFinished}
-              className="bg-white text-slate-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-200 transition-all transform hover:scale-105 flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            >
-              {isRunning ? <><Pause size={24} /> Pause</> : <><Play size={24} /> Start</>}
+            <button onClick={toggleTimer} disabled={mode === 'countdown' && time === 0 && !isRunning && !isFinished} className="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold text-base sm:text-lg hover:bg-slate-200 transition-all transform hover:scale-105 flex items-center gap-2 shadow-lg disabled:opacity-50">
+              {isRunning ? <><Pause size={20} /> Pause</> : <><Play size={20} /> Start</>}
             </button>
-            <button onClick={resetTimer} className="bg-white/10 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all transform hover:scale-105 flex items-center gap-2 border border-white/30">
-              <RotateCcw size={24} /> Reset
+            <button onClick={resetTimer} className="bg-white/10 text-white px-6 py-3 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 transition-all transform hover:scale-105 flex items-center gap-2 border border-white/30">
+              <RotateCcw size={20} /> Reset
             </button>
           </div>
 
           {isFinished && (
             <div className="mt-6 text-center">
-              <p className="text-yellow-300 text-xl font-semibold animate-pulse">
+              <p className="text-yellow-300 text-lg sm:text-xl font-semibold animate-pulse">
                 ⏰ Waktu Habis!
               </p>
             </div>
