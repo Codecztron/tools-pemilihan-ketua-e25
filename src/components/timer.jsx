@@ -1,0 +1,321 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Play, Pause, RotateCcw, Clock, Plus, Minus } from 'lucide-react';
+
+function Timer () {
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const [mode, setMode] = useState('stopwatch');
+  const [countdownTime, setCountdownTime] = useState(300);
+  const [inputMinutes, setInputMinutes] = useState('5');
+  const [inputSeconds, setInputSeconds] = useState('0');
+  const [isFinished, setIsFinished] = useState(false);
+  
+  const intervalRef = useRef(null);
+  const startTimeRef = useRef(null);
+  const pausedTimeRef = useRef(0);
+
+  useEffect(() => {
+    if (isRunning) {
+      startTimeRef.current = Date.now() - (pausedTimeRef.current * 1000);
+      
+      intervalRef.current = setInterval(() => {
+        const now = Date.now();
+        const elapsed = Math.floor((now - startTimeRef.current) / 1000);
+        
+        if (mode === 'countdown') {
+          const newTime = countdownTime - elapsed;
+          if (newTime <= 0) {
+            setTime(0);
+            setIsRunning(false);
+            setIsFinished(true);
+            playSound();
+            pausedTimeRef.current = 0;
+            clearInterval(intervalRef.current);
+          } else {
+            setTime(newTime);
+            pausedTimeRef.current = countdownTime - newTime;
+          }
+        } else {
+          setTime(elapsed);
+          pausedTimeRef.current = elapsed;
+        }
+      }, 100);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isRunning, mode, countdownTime]);
+
+  const playSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = 800;
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.5);
+    } catch (error) {
+      console.log('Audio playback not supported');
+    }
+  };
+
+  const toggleTimer = () => {
+    if (!isRunning && isFinished) {
+      setIsFinished(false);
+    }
+    setIsRunning(!isRunning);
+  };
+
+  const resetTimer = () => {
+    setIsRunning(false);
+    setIsFinished(false);
+    pausedTimeRef.current = 0;
+    startTimeRef.current = null;
+    
+    if (mode === 'countdown') {
+      setTime(countdownTime);
+    } else {
+      setTime(0);
+    }
+  };
+
+  const switchMode = (newMode) => {
+    setIsRunning(false);
+    setIsFinished(false);
+    setMode(newMode);
+    pausedTimeRef.current = 0;
+    startTimeRef.current = null;
+    
+    if (newMode === 'countdown') {
+      setTime(countdownTime);
+    } else {
+      setTime(0);
+    }
+  };
+
+  const setCountdown = () => {
+    const mins = parseInt(inputMinutes) || 0;
+    const secs = parseInt(inputSeconds) || 0;
+    const totalSeconds = (mins * 60) + secs;
+    
+    if (totalSeconds >= 0) { // Allow setting to 0
+      setCountdownTime(totalSeconds);
+      setTime(totalSeconds);
+      pausedTimeRef.current = 0;
+      setIsFinished(false);
+    }
+  };
+
+  const adjustTime = (amount) => {
+    if (!isRunning && mode === 'countdown') {
+      const newTime = Math.max(0, countdownTime + amount);
+      setTime(newTime);
+      setCountdownTime(newTime);
+      pausedTimeRef.current = 0;
+      setIsFinished(false);
+      
+      const mins = Math.floor(newTime / 60);
+      const secs = newTime % 60;
+      setInputMinutes(String(mins));
+      setInputSeconds(String(secs));
+    }
+  };
+
+    const handleMinutesChange = (e) => {
+        const value = e.target.value;
+        if (value === '' || /^\d+$/.test(value)) {
+        setInputMinutes(value);
+        }
+    };
+
+    const handleSecondsChange = (e) => {
+        const value = e.target.value;
+        if (value === '' || /^\d+$/.test(value)) {
+        const num = parseInt(value) || 0;
+        if (num <= 59) {
+            setInputSeconds(value);
+        }
+        }
+    };
+
+    const handleMinutesBlur = () => {
+        if (inputMinutes === '') {
+        setInputMinutes('0');
+        }
+    };
+
+    const handleSecondsBlur = () => {
+        if (inputSeconds === '') {
+        setInputSeconds('0');
+        }
+    };
+
+    const formatTime = (seconds) => {
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        
+        if (hrs > 0) {
+        return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    };
+
+    const getProgressPercentage = () => {
+        if (mode === 'countdown' && countdownTime > 0) {
+        return Math.max(0, Math.min(100, (time / countdownTime) * 100));
+        }
+        return 0;
+    };
+
+    const circumference = 2 * Math.PI * 45;
+    const strokeDashoffset = circumference * (1 - getProgressPercentage() / 100);
+
+    return (
+    // Latar belakang gradien biru gelap sesuai banner
+    <div className="min-h-screen bg-linear-to-br from-[#0a0f2c] via-[#1a1a5b] to-[#3a1c5e] flex items-center justify-center p-4 text-white">
+      <div className="w-full max-w-2xl">
+        {/* Tombol Ganti Mode */}
+        <div className="flex gap-4 mb-8 justify-center">
+          <button
+            onClick={() => switchMode('stopwatch')}
+            disabled={isRunning}
+            className={`px-6 py-3 rounded-lg font-semibold transition-all border ${
+              mode === 'stopwatch'
+                ? 'bg-yellow-400 text-slate-900 shadow-lg scale-105 border-transparent'
+                : 'bg-white/10 text-white hover:bg-white/20 border-white/20'
+            } ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            Stopwatch
+          </button>
+          <button
+            onClick={() => switchMode('countdown')}
+            disabled={isRunning}
+            className={`px-6 py-3 rounded-lg font-semibold transition-all border ${
+              mode === 'countdown'
+                ? 'bg-yellow-400 text-slate-900 shadow-lg scale-105 border-transparent'
+                : 'bg-white/10 text-white hover:bg-white/20 border-white/20'
+            } ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            Countdown
+          </button>
+        </div>
+
+        {/* Kartu Timer Utama */}
+        <div className="bg-black/20 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-12 border border-white/20">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Clock className="text-yellow-300" size={32} />
+              <h1 className="text-3xl font-bold text-white">
+                {mode === 'stopwatch' ? 'Stopwatch' : 'Countdown Timer'}
+              </h1>
+            </div>
+          </div>
+          
+          {/* Tampilan Timer */}
+          <div className="relative mb-8 w-64 h-64 sm:w-80 sm:h-80 mx-auto flex items-center justify-center">
+            {mode === 'countdown' && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <svg width="100%" height="100%" viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6"/>
+                  <circle
+                    cx="50" cy="50" r="45" fill="none"
+                    className="stroke-yellow-400"
+                    strokeWidth="6" strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset} strokeLinecap="round"
+                    style={{ transition: isRunning ? 'stroke-dashoffset 0.1s linear' : 'none' }}
+                  />
+                </svg>
+              </div>
+            )}
+            <div className="relative z-10 text-center">
+              <div className={`text-6xl sm:text-7xl font-bold text-white font-mono ${isFinished ? 'animate-pulse text-red-400' : ''}`}>
+                {formatTime(time)}
+              </div>
+            </div>
+          </div>
+
+          {/* Pengaturan Countdown */}
+          {mode === 'countdown' && !isRunning && (
+            <div className="mb-8 bg-black/20 rounded-xl p-6 border border-white/20">
+              <h3 className="text-yellow-300 font-semibold mb-4 text-center">Atur Waktu</h3>
+              <div className="flex gap-4 items-center justify-center mb-4">
+                <div className="flex flex-col items-center">
+                  <label className="text-slate-300 text-sm mb-2">Menit</label>
+                  <input
+                    type="text" inputMode="numeric" value={inputMinutes}
+                    onChange={handleMinutesChange} onBlur={handleMinutesBlur}
+                    className="w-20 px-3 py-2 rounded-lg text-center bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-white/50"
+                    placeholder="0"
+                  />
+                </div>
+                <div className="text-white text-2xl mt-6">:</div>
+                <div className="flex flex-col items-center">
+                  <label className="text-slate-300 text-sm mb-2">Detik</label>
+                  <input
+                    type="text" inputMode="numeric" value={inputSeconds}
+                    onChange={handleSecondsChange} onBlur={handleSecondsBlur}
+                    className="w-20 px-3 py-2 rounded-lg text-center bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-white/50"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+              <button onClick={setCountdown} className="w-full bg-yellow-400 text-slate-900 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition-colors">
+                Set Timer
+              </button>
+              
+              <div className="flex gap-2 mt-4 justify-center">
+                <button onClick={() => adjustTime(-60)} className="bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors flex items-center gap-2">
+                  <Minus size={16} /> 1 min
+                </button>
+                <button onClick={() => adjustTime(60)} className="bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors flex items-center gap-2">
+                  <Plus size={16} /> 1 min
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Kontrol */}
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={toggleTimer}
+              disabled={mode === 'countdown' && time === 0 && !isRunning && !isFinished}
+              className="bg-white text-slate-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-200 transition-all transform hover:scale-105 flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {isRunning ? <><Pause size={24} /> Pause</> : <><Play size={24} /> Start</>}
+            </button>
+            <button onClick={resetTimer} className="bg-white/10 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all transform hover:scale-105 flex items-center gap-2 border border-white/30">
+              <RotateCcw size={24} /> Reset
+            </button>
+          </div>
+
+          {isFinished && (
+            <div className="mt-6 text-center">
+              <p className="text-yellow-300 text-xl font-semibold animate-pulse">
+                ⏰ Waktu Habis!
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Timer;
