@@ -9,18 +9,18 @@ function Home() {
                 
                 <div className="mb-6">
                     <span className="text-5xl sm:text-6xl font-bold text-yellow-400 tracking-wider">
-                        E25
+                        25
                     </span>
                 </div>
 
                 {/* Judul Utama */}
                 <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 tracking-wide">
-                    Tools Pemilihan Ketua E25
+                    Tools Pemilihan Ketua Angkatan
                 </h1>
 
                 {/* Deskripsi */}
                 <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10">
-                    Website ini digunakan untuk membantu proses pemilihan ketua E25 dengan menyediakan fitur counter dan timer secara
+                    Website ini digunakan untuk membantu proses pemilihan ketua angkatan dengan menyediakan fitur counter dan timer secara
                     <span className="text-yellow-300 font-semibold"> real-time.</span>
                 </p>
 

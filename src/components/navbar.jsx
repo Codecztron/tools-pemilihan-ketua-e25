@@ -24,7 +24,7 @@ function Navbar() {
                 <div className='flex items-center justify-between p-4 max-w-7xl mx-auto'>
                     {/* Logo */}
                     <div className='text-2xl font-bold text-white tracking-wider z-50'>
-                        <Link to="/" onClick={handleLinkClick}>Elektro<span className="text-yellow-400">25</span></Link>
+                        <Link to="/" onClick={handleLinkClick}>Elektro<span className="text-yellow-400">2025</span></Link>
                     </div>
 
                     {/* Desktop Navigation */}
