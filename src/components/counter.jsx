@@ -4,7 +4,7 @@ import { Plus, Minus, RotateCcw } from 'lucide-react';
 
 function Counter() {
     const [candidates, setCandidates] = useState([
-        { id: 1, name: 'Nabil Fatahillah', votes: 0, color: '#3b82f6' },
+        // { id: 1, name: 'Nabil Fatahillah', votes: 0, color: '#3b82f6' },
         { id: 2, name: 'Bagas S. Wicaksono', votes: 0, color: '#f59e0b' },
         { id: 3, name: 'Rifat Maulana Ismail', votes: 0, color: '#ef4444' }
     ]);
@@ -109,7 +109,7 @@ function Counter() {
                     )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8">
                     {candidates.map(candidate => (
                         <div key={candidate.id} className="bg-black/20 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border-b-4 transition-all hover:border-yellow-300" style={{ borderColor: candidate.color }}>
                             <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 text-center h-16 flex items-center justify-center">
