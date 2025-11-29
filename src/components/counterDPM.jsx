@@ -5,7 +5,7 @@ import { Plus, Minus, RotateCcw } from 'lucide-react';
 function CounterDPM() {
     const [candidates, setCandidates] = useState([
         { id: 1, name: 'Calon Ketua DPM 1', votes: 0, color: '#3b82f6' },
-        { id: 2, name: 'Calon Ketua DPM 2', votes: 0, color: '#f59e0b' },
+        { id: 2, name: 'Calon Ketua DPM 2', votes: 0, color: '#fbbf24' },
         { id: 3, name: 'Calon Ketua DPM 3', votes: 0, color: '#ef4444' }
     ]);
 
@@ -39,7 +39,7 @@ function CounterDPM() {
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-            <div className="bg-white p-3 border border-slate-200 shadow-lg rounded-lg text-slate-800 text-sm">
+            <div className="bg-blue-900/90 backdrop-blur-sm p-3 border border-blue-700 shadow-xl rounded-lg text-white text-sm">
                 <p className="font-bold mb-1">{label}</p>
                 <p style={{ color: payload[0].color }}>{`Jumlah Suara: ${payload[0].value}`}</p>
             </div>
@@ -52,32 +52,32 @@ function CounterDPM() {
         <div className="min-h-screen p-4 sm:p-6 md:p-8">
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-8">
-                <h1 className="text-3xl sm:text-4xl font-bold text-[#2c3e50] mb-2">
+                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 tracking-wide">
                     Pemilihan Ketua DPM
                 </h1>
-                <p className="text-slate-600 text-base sm:text-lg">
+                <p className="text-blue-200 text-base sm:text-lg">
                     Total Suara: 
-                    <span className="font-semibold text-xl sm:text-2xl text-[#e67e22] font-mono ml-2">{totalVotes}</span>
+                    <span className="font-bold text-xl sm:text-2xl text-yellow-400 font-mono ml-2">{totalVotes}</span>
                 </p>
                 </div>
 
                 <div className="mb-10">
                     {totalVotes > 0 ? (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-slate-100">
-                            <h3 className="text-lg sm:text-xl font-bold text-[#5e87a8] mb-4 text-center">Grafik Batang</h3>
+                        <div className="bg-white/5 backdrop-blur-md rounded-2xl shadow-xl p-4 sm:p-6 border border-white/10">
+                            <h3 className="text-lg sm:text-xl font-bold text-yellow-400 mb-4 text-center">Grafik Batang</h3>
                             <ResponsiveContainer width="100%" height={300}>
                                 <BarChart data={candidates} margin={{ top: 5, right: 5, bottom: 60, left: -20 }}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0, 0, 0, 0.05)" />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
                                     <XAxis 
                                         dataKey="name" 
-                                        tick={{ fill: '#475569', fontSize: 11 }} 
+                                        tick={{ fill: '#bfdbfe', fontSize: 11 }} 
                                         interval={0}
                                         angle={-45}
                                         textAnchor="end"
                                     />
-                                    <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
-                                    <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}/>
+                                    <YAxis tick={{ fill: '#bfdbfe', fontSize: 12 }} />
+                                    <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}/>
                                     <Bar dataKey="votes">
                                         {candidates.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
                                     </Bar>
@@ -85,8 +85,8 @@ function CounterDPM() {
                             </ResponsiveContainer>
                         </div>
 
-                        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-slate-100">
-                            <h3 className="text-lg sm:text-xl font-bold text-[#5e87a8] mb-4 text-center">Diagram Persentase</h3>
+                        <div className="bg-white/5 backdrop-blur-md rounded-2xl shadow-xl p-4 sm:p-6 border border-white/10">
+                            <h3 className="text-lg sm:text-xl font-bold text-yellow-400 mb-4 text-center">Diagram Persentase</h3>
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
                                     <Pie data={pieData} cx="50%" cy="50%" labelLine={false}
@@ -95,14 +95,14 @@ function CounterDPM() {
                                         {pieData.map((entry, index) => (<Cell key={`cell-${index}`} fill={candidates[index].color} />))}
                                     </Pie>
                                     <Tooltip content={<CustomTooltip />} />
-                                    <Legend formatter={(value) => <span className="text-slate-600 text-sm">{value}</span>} />
+                                    <Legend formatter={(value) => <span className="text-blue-100 text-sm">{value}</span>} />
                                 </PieChart>
                             </ResponsiveContainer>
                         </div>
                     </div>
                     ) : (
-                    <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-12 text-center border border-slate-100">
-                        <p className="text-slate-500 text-base sm:text-lg">
+                    <div className="bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-8 sm:p-12 text-center border border-white/10">
+                        <p className="text-blue-200 text-base sm:text-lg">
                         Belum ada suara yang masuk. Klik tombol '+' pada kandidat untuk memulai.
                         </p>
                     </div>
@@ -111,23 +111,23 @@ function CounterDPM() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8">
                     {candidates.map(candidate => (
-                        <div key={candidate.id} className="bg-white rounded-2xl shadow-xl p-6 border-b-4 transition-all hover:-translate-y-1" style={{ borderColor: candidate.color }}>
-                            <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-4 text-center h-16 flex items-center justify-center">
+                        <div key={candidate.id} className="bg-white/5 backdrop-blur-md rounded-2xl shadow-xl p-6 border-b-4 transition-all hover:bg-white/10" style={{ borderColor: candidate.color }}>
+                            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 text-center h-16 flex items-center justify-center">
                                 {candidate.name}
                             </h3>
                             <div className="text-5xl sm:text-6xl font-bold text-center mb-4 font-mono" style={{ color: candidate.color }}>
                                 {candidate.votes}
                             </div>
                             <div className="text-center mb-6">
-                                <span className="text-2xl sm:text-3xl font-semibold text-slate-400 font-mono">
+                                <span className="text-2xl sm:text-3xl font-semibold text-blue-200 font-mono">
                                 {getPercentage(candidate.votes)}%
                                 </span>
                             </div>
                             <div className="flex gap-4 justify-center">
-                                <button onClick={() => decrementVote(candidate.id)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-3 sm:p-4 rounded-full transition-colors disabled:opacity-50" disabled={candidate.votes === 0}>
+                                <button onClick={() => decrementVote(candidate.id)} className="bg-white/10 hover:bg-white/20 text-white p-3 sm:p-4 rounded-full transition-colors disabled:opacity-30" disabled={candidate.votes === 0}>
                                     <Minus size={24} />
                                 </button>
-                                <button onClick={() => incrementVote(candidate.id)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-3 sm:p-4 rounded-full transition-colors">
+                                <button onClick={() => incrementVote(candidate.id)} className="bg-white/10 hover:bg-white/20 text-white p-3 sm:p-4 rounded-full transition-colors">
                                     <Plus size={24} />
                                 </button>
                             </div>
@@ -136,7 +136,7 @@ function CounterDPM() {
                 </div>
 
                 <div className="text-center mb-8">
-                    <button onClick={resetVotes} className="bg-[#e67e22] hover:bg-[#d35400] text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 mx-auto transition-all transform hover:scale-105 shadow-lg">
+                    <button onClick={resetVotes} className="bg-yellow-500 hover:bg-yellow-600 text-blue-900 px-6 py-3 rounded-lg font-bold flex items-center gap-2 mx-auto transition-all transform hover:scale-105 shadow-lg shadow-yellow-500/20">
                         <RotateCcw size={18} />
                         Reset Semua Suara
                     </button>

@@ -5,9 +5,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* Warna Background Global sesuai kertas banner */
-  background-color: #fdf9f0;
-  color: #2c3e50;
+  /* Background Biru Royal Gelap - diambil dari warna dasar banner */
+  background-color: #0f2052; 
+  color: #ffffff; /* Default text putih agar terbaca di background biru */
 }
 
 body {

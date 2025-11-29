@@ -11,29 +11,30 @@ function Home() {
         <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-4 sm:p-8">
             <div className="text-center max-w-4xl mx-auto">
                 
-                <div className="mb-6">
-                    <span className="text-5xl sm:text-6xl font-bold text-[#2c3e50] tracking-wider uppercase">
-                        Musyawarah Besar
+                <div className="mb-4">
+                    {/* Efek teks Emas dengan Shadow Biru (Meniru Banner) */}
+                    <span className="text-5xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 to-yellow-500 tracking-wider drop-shadow-sm filter">
+                        MUSYAWARAH BESAR
                     </span>
                 </div>
 
-                <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 tracking-wide text-[#5e87a8]">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 tracking-wide text-blue-100">
                     Tools Pemilihan Ketua
                 </h1>
 
-                <p className="text-base sm:text-xl text-slate-600 max-w-2xl mx-auto mb-10">
+                <p className="text-base sm:text-xl text-blue-200 max-w-2xl mx-auto mb-10 leading-relaxed">
                     Website ini digunakan untuk membantu proses pemilihan ketua dengan menyediakan fitur counter dan timer secara
-                    <span className="text-[#e67e22] font-bold"> real-time.</span>
+                    <span className="text-yellow-400 font-bold"> real-time.</span>
                 </p>
 
                 <div className="flex flex-col items-center justify-center gap-6">
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                        {/* Tombol Utama: Biru Laut (#5e87a8) */}
+                        {/* Tombol Utama: Kuning Emas (High Contrast) */}
                         {pathButton.map((path) => (
                             <Link 
                                 key={path.to}
                                 to={path.to} 
-                                className="w-full sm:w-auto bg-[#5e87a8] text-white px-8 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-[#4a6b8a] transition-all transform hover:scale-105 flex items-center justify-center gap-3 shadow-lg shadow-blue-900/10"
+                                className="w-full sm:w-auto bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-base sm:text-lg hover:from-yellow-300 hover:to-yellow-400 transition-all transform hover:scale-105 flex items-center justify-center gap-3 shadow-lg shadow-yellow-500/20"
                             >
                                 <BarChart2 size={20} />
                                 <span>{path.label}</span>
@@ -41,10 +42,10 @@ function Home() {
                         ))}
                     </div>
 
-                    {/* Tombol Timer: Outline Style */}
+                    {/* Tombol Timer: Transparan/Glass */}
                     <Link 
                         to="/timer" 
-                        className="w-full sm:w-auto bg-white border-2 border-[#5e87a8] text-[#5e87a8] px-8 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-blue-50 transition-all transform hover:scale-105 flex items-center justify-center gap-3"
+                        className="w-full sm:w-auto bg-white/5 border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/10 transition-all transform hover:scale-105 flex items-center justify-center gap-3 backdrop-blur-sm"
                     >
                         <Clock size={20} />
                         <span>Timer</span>
