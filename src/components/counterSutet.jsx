@@ -2,11 +2,11 @@ import React,{ useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Plus, Minus, RotateCcw } from 'lucide-react';
 
-function Counter() {
+function CounterSutet() {
     const [candidates, setCandidates] = useState([
-        { id: 1, name: 'Nabil Fatahillah', votes: 0, color: '#3b82f6' },
-        { id: 2, name: 'Bagas S. Wicaksono', votes: 0, color: '#f59e0b' },
-        { id: 3, name: 'Rifat Maulana Ismail', votes: 0, color: '#ef4444' }
+        { id: 1, name: 'Calon Ketua Sutet 1', votes: 0, color: '#3b82f6' },
+        { id: 2, name: 'Calon Ketua Sutet 2', votes: 0, color: '#f59e0b' },
+        { id: 3, name: 'Calon Ketua Sutet 3', votes: 0, color: '#ef4444' }
     ]);
 
     const totalVotes = candidates.reduce((sum, c) => sum + c.votes, 0);
@@ -53,7 +53,7 @@ function Counter() {
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-8">
                 <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                    Pemilihan Ketua
+                    Pemilihan Ketua Sutet
                 </h1>
                 <p className="text-slate-300 text-base sm:text-lg">
                     Total Suara: 
@@ -146,4 +146,4 @@ function Counter() {
      );
 }
 
-export default Counter;
+export default CounterSutet;

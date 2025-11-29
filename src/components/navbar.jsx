@@ -6,6 +6,16 @@ function Navbar() {
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    // 1. Definisi daftar menu di sini agar otomatis
+    // Tambahkan path baru cukup di array ini saja
+    const navLinks = [
+        { path: '/', label: 'Home' },
+        // { path: '/counter', label: 'Counter' },
+        { path: '/counter-sutet', label: 'Counter Sutet' },
+        { path: '/counter-dpm', label: 'Counter DPM' },
+        { path: '/timer', label: 'Timer' },
+    ];
+
     // Helper function to determine link style
     const getLinkClass = (path) => {
         return location.pathname === path
@@ -24,20 +34,20 @@ function Navbar() {
                 <div className='flex items-center justify-between p-4 max-w-7xl mx-auto'>
                     {/* Logo */}
                     <div className='text-2xl font-bold text-white tracking-wider z-50'>
-                        <Link to="/" onClick={handleLinkClick}>Elektro<span className="text-yellow-400">2025</span></Link>
+                        <Link to="/" onClick={handleLinkClick}>Musyawarah Besar <span className="text-yellow-300"> 2025</span></Link>
                     </div>
 
-                    {/* Desktop Navigation */}
+                    {/* Desktop Navigation (Otomatis dengan Map) */}
                     <div className='hidden md:flex items-center gap-6 text-lg'>
-                        <Link to="/" className={getLinkClass('/')}>
-                            Home
-                        </Link>
-                        <Link to="/counter" className={getLinkClass('/counter')}>
-                            Counter
-                        </Link>
-                        <Link to="/timer" className={getLinkClass('/timer')}>
-                            Timer
-                        </Link>
+                        {navLinks.map((link) => (
+                            <Link 
+                                key={link.path} 
+                                to={link.path} 
+                                className={getLinkClass(link.path)}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
                     </div>
                     
                     {/* Mobile Menu Button */}
@@ -48,20 +58,21 @@ function Navbar() {
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
+                {/* Mobile Menu (Otomatis dengan Map) */}
                 {isMenuOpen && (
                     <div 
                         className="md:hidden absolute top-0 left-0 w-full h-screen bg-[#0a0f2c]/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 text-2xl"
                     >
-                        <Link to="/" className={getLinkClass('/')} onClick={handleLinkClick}>
-                            Home
-                        </Link>
-                        <Link to="/counter" className={getLinkClass('/counter')} onClick={handleLinkClick}>
-                            Counter
-                        </Link>
-                        <Link to="/timer" className={getLinkClass('/timer')} onClick={handleLinkClick}>
-                            Timer
-                        </Link>
+                        {navLinks.map((link) => (
+                            <Link 
+                                key={link.path}
+                                to={link.path} 
+                                className={getLinkClass(link.path)} 
+                                onClick={handleLinkClick}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
                     </div>
                 )}
             </div>
