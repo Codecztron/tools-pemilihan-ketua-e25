@@ -5,8 +5,8 @@ import { Plus, Minus, RotateCcw } from 'lucide-react';
 function CounterSutet() {
     const [candidates, setCandidates] = useState([
         { id: 1, name: 'Calon Ketua Sutet 1', votes: 0, color: '#3b82f6' }, // Biru Terang
-        { id: 2, name: 'Calon Ketua Sutet 2', votes: 0, color: '#fbbf24' }, // Kuning/Emas
-        { id: 3, name: 'Calon Ketua Sutet 3', votes: 0, color: '#ef4444' }  // Merah
+        { id: 2, name: 'Calon Ketua Sutet 2', votes: 0, color: '#fbbf24' } // Kuning/Emas
+        // { id: 3, name: 'Calon Ketua Sutet 3', votes: 0, color: '#ef4444' }  // Merah
     ]);
 
     const totalVotes = candidates.reduce((sum, c) => sum + c.votes, 0);
@@ -110,7 +110,7 @@ function CounterSutet() {
                     )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8">
                     {candidates.map(candidate => (
                         <div key={candidate.id} className="bg-white/5 backdrop-blur-md rounded-2xl shadow-xl p-6 border-b-4 transition-all hover:bg-white/10" style={{ borderColor: candidate.color }}>
                             <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 text-center h-16 flex items-center justify-center">
