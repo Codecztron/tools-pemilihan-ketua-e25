@@ -32,9 +32,9 @@ function Navbar() {
                     {/* Logo */}
                     <div className='text-2xl font-bold text-white tracking-wider z-50'>
                         <Link to="/" onClick={handleLinkClick}>
-                            Musyawarah Besar 
+                            Komisi Pemilihan Kahim 
                             {/* Tahun dengan warna Emas */}
-                            <span className="text-yellow-400"> 2025</span>
+                            <span className="text-yellow-400"> 2026</span>
                         </Link>
                     </div>
 
