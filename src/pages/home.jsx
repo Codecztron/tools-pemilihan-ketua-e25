@@ -4,8 +4,8 @@ import { BarChart2, Clock } from 'lucide-react';
 
 function Home() {
     const pathButton = [
-        { to: '/counter-sutet', label: 'Counter Sutet' },
-        { to: '/counter-dpm', label: 'Counter DPM' },
+        // { to: '/counter-sutet', label: 'Counter Sutet' },
+        // { to: '/counter-dpm', label: 'Counter DPM' },
     ];
     return (
         <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-4 sm:p-8">
