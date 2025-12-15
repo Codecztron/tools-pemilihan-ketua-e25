@@ -14,16 +14,16 @@ function Home() {
                 <div className="mb-4">
                     {/* Efek teks Emas dengan Shadow Biru (Meniru Banner) */}
                     <span className="text-5xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 to-yellow-500 tracking-wider drop-shadow-sm filter">
-                        MUSYAWARAH BESAR
+                        KOMISI PEMILIHAN KAHIM
                     </span>
                 </div>
 
                 <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 tracking-wide text-blue-100">
-                    Tools Pemilihan Ketua
+                    Tools Pemilihan Kahim
                 </h1>
 
                 <p className="text-base sm:text-xl text-blue-200 max-w-2xl mx-auto mb-10 leading-relaxed">
-                    Website ini digunakan untuk membantu proses pemilihan ketua dengan menyediakan fitur counter dan timer secara
+                    Website ini digunakan untuk membantu proses pemilihan kahim dengan menyediakan fitur timer secara
                     <span className="text-yellow-400 font-bold"> real-time.</span>
                 </p>
 
