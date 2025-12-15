@@ -8,8 +8,8 @@ function Navbar() {
 
     const navLinks = [
         { path: '/', label: 'Home' },
-        { path: '/counter-sutet', label: 'Counter Sutet' },
-        { path: '/counter-dpm', label: 'Counter DPM' },
+        // { path: '/counter-sutet', label: 'Counter Sutet' },
+        // { path: '/counter-dpm', label: 'Counter DPM' },
         { path: '/timer', label: 'Timer' },
     ];
 
